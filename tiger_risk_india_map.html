@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Panthera tigris (Linnaeus, 1758) Risk Assessment</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        .risk-info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-family: Arial, sans-serif;
+            max-width: 300px;
+        }
+        .risk-score {
+            font-size: 36px;
+            font-weight: bold;
+            color: #ff9800;
+        }
+        .species-name {
+            font-size: 18px;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        .layer-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .layer-toggle label {
+            display: block;
+            margin: 5px 0;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    
+    <div class="risk-info">
+        <div class="species-name">Panthera tigris (Linnaeus, 1758)</div>
+        <div>Endangerment Risk Score:</div>
+        <div class="risk-score">56.3/100</div>
+    </div>
+    
+    <div class="layer-toggle">
+        <h4 style="margin: 0 0 10px 0;">Map Layers</h4>
+        <label><input type="checkbox" id="forest-layer" checked> Forest Loss</label>
+        <label><input type="checkbox" id="protected-layer"> Protected Areas</label>
+        <label><input type="checkbox" id="roads-layer"> Roads</label>
+    </div>
+
+    <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWxpMzkiLCJhIjoiY20yaDJyajNsMDRsdzJqcHgyZjZ5d2ppaSJ9.585a03ace8b6f9281d5189cd11e1f32f';
+        
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/satellite-streets-v12',
+            center: [0.0, 0.0],
+            zoom: 6
+        });
+        
+        map.on('load', () => {
+            // Add bounding box
+            map.addSource('bbox', {
+                'type': 'geojson',
+                'data': {
+                    'type': 'Feature',
+                    'geometry': {
+                        'type': 'Polygon',
+                        'coordinates': [[
+                            [0, 0],
+                            [0, 0],
+                            [0, 0],
+                            [0, 0],
+                            [0, 0]
+                        ]]
+                    }
+                }
+            });
+            
+            map.addLayer({
+                'id': 'bbox-outline',
+                'type': 'line',
+                'source': 'bbox',
+                'paint': {
+                    'line-color': '#ff9800',
+                    'line-width': 3
+                }
+            });
+            
+            map.addLayer({
+                'id': 'bbox-fill',
+                'type': 'fill',
+                'source': 'bbox',
+                'paint': {
+                    'fill-color': '#ff9800',
+                    'fill-opacity': 0.2
+                }
+            });
+            
+            // Fit to bounding box
+            map.fitBounds([
+                [0, 0],
+                [0, 0]
+            ], { padding: 50 });
+        });
+        
+        // Add navigation controls
+        map.addControl(new mapboxgl.NavigationControl());
+        
+        // Layer toggles (simplified - would connect to actual tile sources)
+        document.getElementById('forest-layer').addEventListener('change', (e) => {
+            // Toggle forest loss layer visibility
+            console.log('Forest layer:', e.target.checked);
+        });
+        
+        document.getElementById('protected-layer').addEventListener('change', (e) => {
+            // Toggle protected areas layer
+            console.log('Protected areas:', e.target.checked);
+        });
+        
+        document.getElementById('roads-layer').addEventListener('change', (e) => {
+            // Toggle roads layer
+            console.log('Roads layer:', e.target.checked);
+        });
+    </script>
+</body>
+</html>

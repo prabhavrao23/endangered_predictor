@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Global Animal Endangerment Predictor - Interactive Globe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            max-height: 90vh;
+            background: rgba(15, 20, 40, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+            backdrop-filter: blur(10px);
+        }
+
+        .panel-header {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px 12px 0 0;
+        }
+
+        .panel-header h1 {
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .panel-header p {
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        .panel-section {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-section h2 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        /* Scenario Sliders */
+        .scenario-control {
+            margin-bottom: 20px;
+        }
+
+        .scenario-control label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .scenario-value {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Stats Display */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-top: 4px;
+        }
+
+        /* Species List */
+        .species-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .species-item {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-left: 3px solid transparent;
+        }
+
+        .species-item:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-left-color: #667eea;
+        }
+
+        .species-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .species-risk {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+        }
+
+        .risk-bar {
+            width: 60%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .risk-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        .risk-critical { background: linear-gradient(90deg, #ff416c, #ff4b2b); }
+        .risk-high { background: linear-gradient(90deg, #f857a6, #ff5858); }
+        .risk-moderate { background: linear-gradient(90deg, #fdbb2d, #22c1c3); }
+        .risk-low { background: linear-gradient(90deg, #00c853, #b2ff59); }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Info Panel */
+        .info-panel {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(15, 20, 40, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-panel h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+
+        .info-panel p {
+            font-size: 13px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(15, 20, 40, 0.95);
+            padding: 30px 50px;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+        }
+
+        .loading-overlay.active {
+            display: block;
+        }
+
+        .spinner {
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(102, 126, 234, 0.5);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(102, 126, 234, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loading">
+        <div class="spinner"></div>
+        <p>Predicting global impacts...</p>
+    </div>
+
+    <!-- Control Panel -->
+    <div class="control-panel">
+        <div class="panel-header">
+            <h1>🌍 Global Risk Predictor</h1>
+            <p>Adjust scenarios to predict animal endangerment</p>
+        </div>
+
+        <!-- Global Stats -->
+        <div class="panel-section">
+            <h2>Current Global Status</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="avgRisk">56</div>
+                    <div class="stat-label">Avg Risk Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="criticalCount">127</div>
+                    <div class="stat-label">Critical Species</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="regionCount">45</div>
+                    <div class="stat-label">Regions Analyzed</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="trendIndicator">↑ 8%</div>
+                    <div class="stat-label">Risk Trend</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scenario Controls -->
+        <div class="panel-section">
+            <h2>🎛️ Environmental Scenarios</h2>
+            
+            <div class="scenario-control">
+                <label>
+                    <span>🌡️ Climate Change (Temperature)</span>
+                    <span class="scenario-value" id="climateValue">+1.0°C</span>
+                </label>
+                <input type="range" class="slider" id="climateSlider" min="0" max="50" value="10" step="1">
+            </div>
+
+            <div class="scenario-control">
+                <label>
+                    <span>🌊 Sea Level Rise</span>
+                    <span class="scenario-value" id="seaLevelValue">+0.5m</span>
+                </label>
+                <input type="range" class="slider" id="seaLevelSlider" min="0" max="50" value="5" step="1">
+            </div>
+
+            <div class="scenario-control">
+                <label>
+                    <span>🌳 Deforestation</span>
+                    <span class="scenario-value" id="deforestValue">+15%</span>
+                </label>
+                <input type="range" class="slider" id="deforestSlider" min="0" max="100" value="15" step="1">
+            </div>
+
+            <div class="scenario-control">
+                <label>
+                    <span>💨 Air Pollution (PM2.5)</span>
+                    <span class="scenario-value" id="pollutionValue">+20%</span>
+                </label>
+                <input type="range" class="slider" id="pollutionSlider" min="0" max="100" value="20" step="1">
+            </div>
+
+            <div class="scenario-control">
+                <label>
+                    <span>🎣 Overfishing / Exploitation</span>
+                    <span class="scenario-value" id="fishingValue">+10%</span>
+                </label>
+                <input type="range" class="slider" id="fishingSlider" min="0" max="100" value="10" step="1">
+            </div>
+
+            <div class="scenario-control">
+                <label>
+                    <span>🏭 Habitat Loss</span>
+                    <span class="scenario-value" id="habitatValue">+25%</span>
+                </label>
+                <input type="range" class="slider" id="habitatSlider" min="0" max="100" value="25" step="1">
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="predictImpact()">Predict Impact</button>
+                <button class="btn btn-secondary" onclick="resetScenarios()">Reset</button>
+            </div>
+        </div>
+
+        <!-- Species at Risk -->
+        <div class="panel-section">
+            <h2>🦁 High-Risk Species</h2>
+            <div class="species-list" id="speciesList">
+                <!-- Species will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Panel -->
+    <div class="info-panel">
+        <h3>📊 Prediction Model</h3>
+        <p id="predictionInfo">
+            Using ML models trained on real data from IUCN, GBIF, Global Forest Watch, 
+            and World Bank to predict how environmental changes affect 5,000+ species globally.
+        </p>
+    </div>
+
+    <script>
+        // Initialize Mapbox
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYWxpMzkiLCJhIjoiY20yaDJyajNsMDRsdzJqcHgyZjZ5d2ppaSJ9.585a03ace8b6f9281d5189cd11e1f32f';
+
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/satellite-streets-v12',
+            center: [20, 20],
+            zoom: 2,
+            pitch: 45,
+            bearing: -17.6,
+            projection: 'globe'
+        });
+
+        // Add navigation controls
+        map.addControl(new mapboxgl.NavigationControl());
+
+        // Sample species data (would come from API)
+        const speciesData = [
+            { name: 'Bengal Tiger', scientific: 'Panthera tigris', risk: 72, region: 'India', change: '+8%' },
+            { name: 'African Elephant', scientific: 'Loxodonta africana', risk: 68, region: 'Kenya', change: '+12%' },
+            { name: 'Giant Panda', scientific: 'Ailuropoda melanoleuca', risk: 54, region: 'China', change: '+5%' },
+            { name: 'Polar Bear', scientific: 'Ursus maritimus', risk: 85, region: 'Arctic', change: '+18%' },
+            { name: 'Blue Whale', scientific: 'Balaenoptera musculus', risk: 62, region: 'Oceans', change: '+7%' },
+            { name: 'Orangutan', scientific: 'Pongo abelii', risk: 78, region: 'Indonesia', change: '+14%' },
+            { name: 'Snow Leopard', scientific: 'Panthera uncia', risk: 71, region: 'Himalayas', change: '+10%' },
+            { name: 'Mountain Gorilla', scientific: 'Gorilla beringei', risk: 66, region: 'Rwanda', change: '+6%' }
+        ];
+
+        // Initialize species list
+        function initSpeciesList() {
+            const list = document.getElementById('speciesList');
+            list.innerHTML = speciesData.map(species => `
+                <div class="species-item" onclick="focusSpecies('${species.scientific}', ${species.risk})">
+                    <div class="species-name">${species.name}</div>
+                    <div class="species-risk">
+                        <span>${species.region}</span>
+                        <div class="risk-bar">
+                            <div class="risk-fill ${getRiskClass(species.risk)}" style="width: ${species.risk}%"></div>
+                        </div>
+                        <span>${species.risk}/100</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getRiskClass(risk) {
+            if (risk >= 75) return 'risk-critical';
+            if (risk >= 60) return 'risk-high';
+            if (risk >= 40) return 'risk-moderate';
+            return 'risk-low';
+        }
+
+        // Slider updates
+        document.getElementById('climateSlider').oninput = function() {
+            document.getElementById('climateValue').textContent = '+' + (this.value / 10).toFixed(1) + '°C';
+        };
+
+        document.getElementById('seaLevelSlider').oninput = function() {
+            document.getElementById('seaLevelValue').textContent = '+' + (this.value / 10).toFixed(1) + 'm';
+        };
+
+        document.getElementById('deforestSlider').oninput = function() {
+            document.getElementById('deforestValue').textContent = '+' + this.value + '%';
+        };
+
+        document.getElementById('pollutionSlider').oninput = function() {
+            document.getElementById('pollutionValue').textContent = '+' + this.value + '%';
+        };
+
+        document.getElementById('fishingSlider').oninput = function() {
+            document.getElementById('fishingValue').textContent = '+' + this.value + '%';
+        };
+
+        document.getElementById('habitatSlider').oninput = function() {
+            document.getElementById('habitatValue').textContent = '+' + this.value + '%';
+        };
+
+        // Predict Impact using REAL API
+        async function predictImpact() {
+            const loading = document.getElementById('loading');
+            loading.classList.add('active');
+
+            // Gather scenario values
+            const temperature = document.getElementById('climateSlider').value / 10;
+            const seaLevel = document.getElementById('seaLevelSlider').value / 10;
+            const deforestation = document.getElementById('deforestSlider').value;
+            const pollution = document.getElementById('pollutionSlider').value;
+            const fishing = document.getElementById('fishingSlider').value;
+            const habitat = document.getElementById('habitatSlider').value;
+
+            try {
+                // Call REAL API
+                const response = await fetch(`http://localhost:8000/predict/global?temperature=${temperature}&sea_level=${seaLevel}&deforestation=${deforestation}&pollution=${pollution}&fishing=${fishing}&habitat_loss=${habitat}`);
+                const data = await response.json();
+
+                // Update stats with REAL predicted values
+                const stats = data.global_stats;
+                document.getElementById('avgRisk').textContent = stats.avg_predicted_risk;
+                document.getElementById('criticalCount').textContent = stats.critical_species;
+                document.getElementById('trendIndicator').textContent = stats.risk_trend;
+
+                // Update species list with predictions
+                const list = document.getElementById('speciesList');
+                list.innerHTML = data.species.slice(0, 8).map(species => `
+                    <div class="species-item" onclick="focusSpecies('${species.scientific}', ${species.predicted_risk})">
+                        <div class="species-name">${species.name}</div>
+                        <div class="species-risk">
+                            <span>${species.region}</span>
+                            <div class="risk-bar">
+                                <div class="risk-fill ${getRiskClass(species.predicted_risk)}" style="width: ${species.predicted_risk}%"></div>
+                            </div>
+                            <span>${species.predicted_risk}/100</span>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Update prediction info with detailed breakdown
+                const topDriver = Object.entries(data.species[0].drivers)
+                    .sort((a, b) => b[1] - a[1])[0];
+                
+                document.getElementById('predictionInfo').innerHTML = `
+                    <strong>ML Prediction Results:</strong><br>
+                    🌡️ Temperature: +${temperature}°C → +${stats.avg_risk_increase.toFixed(1)}% avg risk<br>
+                    🌊 Sea Level: +${seaLevel}m<br>
+                    🌳 Deforestation: +${deforestation}%<br>
+                    💨 Pollution: +${pollution}%<br>
+                    <br><strong>${data.species.length} species analyzed</strong><br>
+                    <strong>Top driver: ${topDriver[0]} (+${topDriver[1]}% risk)</strong>
+                `;
+
+                loading.classList.remove('active');
+                
+                // Animate the globe
+                map.easeTo({ bearing: map.getBearing() + 10, duration: 500 });
+                setTimeout(() => map.easeTo({ bearing: map.getBearing() - 10, duration: 500 }), 500);
+
+            } catch (error) {
+                console.error('Prediction failed:', error);
+                loading.classList.remove('active');
+                alert('Failed to connect to prediction API. Make sure the server is running at http://localhost:8000');
+            }
+        }
+
+        // Reset Scenarios
+        function resetScenarios() {
+            document.getElementById('climateSlider').value = 10;
+            document.getElementById('seaLevelSlider').value = 5;
+            document.getElementById('deforestSlider').value = 15;
+            document.getElementById('pollutionSlider').value = 20;
+            document.getElementById('fishingSlider').value = 10;
+            document.getElementById('habitatSlider').value = 25;
+            
+            // Trigger updates
+            document.getElementById('climateSlider').oninput();
+            document.getElementById('seaLevelSlider').oninput();
+            document.getElementById('deforestSlider').oninput();
+            document.getElementById('pollutionSlider').oninput();
+            document.getElementById('fishingSlider').oninput();
+            document.getElementById('habitatSlider').oninput();
+        }
+
+        // Focus on species
+        function focusSpecies(scientific, risk) {
+            // Would call API: /risk with species name
+            alert(`Fetching detailed analysis for ${scientific}...\nCurrent Risk: ${risk}/100`);
+            // map.flyTo({ center: [lng, lat], zoom: 5 });
+        }
+
+        // Initialize
+        map.on('load', () => {
+            initSpeciesList();
+            
+            // Add some sample markers for demo
+            const hotspots = [
+                { coords: [78.9629, 20.5937], name: 'India - Tiger Habitat', risk: 72 },
+                { coords: [36.8219, -1.2921], name: 'Kenya - Elephant Range', risk: 68 },
+                { coords: [104.1954, 35.8617], name: 'China - Panda Reserve', risk: 54 },
+                { coords: [-100.0, 70.0], name: 'Arctic - Polar Bear', risk: 85 },
+                { coords: [117.4, -0.5], name: 'Borneo - Orangutan', risk: 78 }
+            ];
+
+            hotspots.forEach(spot => {
+                const el = document.createElement('div');
+                el.className = 'marker';
+                el.style.backgroundColor = spot.risk > 70 ? '#ff4b2b' : '#ff9800';
+                el.style.width = '12px';
+                el.style.height = '12px';
+                el.style.borderRadius = '50%';
+                el.style.border = '2px solid white';
+                el.style.boxShadow = '0 2px 8px rgba(0,0,0,0.4)';
+
+                new mapboxgl.Marker(el)
+                    .setLngLat(spot.coords)
+                    .setPopup(new mapboxgl.Popup({ offset: 25 })
+                        .setHTML(`<strong>${spot.name}</strong><br>Risk: ${spot.risk}/100`))
+                    .addTo(map);
+            });
+
+            // Add atmosphere
+            map.setFog({
+                'range': [0.5, 10],
+                'color': '#0a0e27',
+                'horizon-blend': 0.1
+            });
+        });
+    </script>
+</body>
+</html>
+
