@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Global Animal Population Predictor - ML Enhanced</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: #0a0e27;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        #map {
+            position: absolute;
+            top: 70px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 70px);
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 0 30px;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left h1 {
+            font-size: 22px;
+            margin: 0;
+        }
+
+        .header-left p {
+            font-size: 12px;
+            margin: 3px 0 0 0;
+            opacity: 0.9;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .stat-mini {
+            text-align: center;
+            padding: 5px 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .stat-mini-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .stat-mini-label {
+            font-size: 10px;
+            opacity: 0.8;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            position: absolute;
+            top: 90px;
+            right: 20px;
+            width: 420px;
+            max-height: calc(100vh - 110px);
+            background: rgba(15, 20, 40, 0.98);
+            border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            overflow-y: auto;
+            z-index: 900;
+        }
+
+        .panel-section {
+            padding: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-section h2 {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        /* Region Filter */
+        .filter-section {
+            margin-bottom: 15px;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        select option {
+            background: #1a1f3a;
+            color: white;
+        }
+
+        /* Scenario Controls */
+        .scenario-control {
+            margin-bottom: 18px;
+        }
+
+        .scenario-control label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 13px;
+        }
+
+        .scenario-value {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Timeline Selector */
+        .timeline-control {
+            margin-bottom: 20px;
+        }
+
+        .timeline-years {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 11px;
+            opacity: 0.7;
+        }
+
+        /* Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-predict {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-reset {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Species Cards */
+        .species-card {
+            padding: 12px;
+            margin-bottom: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .species-card:hover {
+            background: rgba(102, 126, 234, 0.15);
+            border-left-color: #667eea;
+        }
+
+        .species-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .species-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .species-status {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .status-critical { background: #ff4b2b; }
+        .status-endangered { background: #ff5858; }
+        .status-vulnerable { background: #ff9800; }
+
+        .species-meta {
+            font-size: 11px;
+            opacity: 0.7;
+            margin-bottom: 8px;
+        }
+
+        .population-info {
+            font-size: 12px;
+            margin-top: 6px;
+            padding: 6px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        .pop-change {
+            font-weight: bold;
+        }
+
+        .pop-decline { color: #ff5858; }
+        .pop-stable { color: #ffeb3b; }
+        .pop-increase { color: #4caf50; }
+
+        /* Loading */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 39, 0.95);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .loading-overlay.active { display: flex; }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+        ::-webkit-scrollbar-thumb { background: rgba(102, 126, 234, 0.5); border-radius: 3px; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="header-left">
+            <h1>Global Animal Population Predictor</h1>
+            <p>ML-powered demographic projections with real population data</p>
+        </div>
+        <div class="header-right">
+            <div class="stat-mini">
+                <div class="stat-mini-value" id="totalSpecies">85</div>
+                <div class="stat-mini-label">Species</div>
+            </div>
+            <div class="stat-mini">
+                <div class="stat-mini-value" id="totalPop">0</div>
+                <div class="stat-mini-label">Total Pop</div>
+            </div>
+            <div class="stat-mini">
+                <div class="stat-mini-value" id="popChange">0%</div>
+                <div class="stat-mini-label">Proj. Change</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map -->
+    <div id="map"></div>
+
+    <!-- Loading -->
+    <div class="loading-overlay" id="loading">
+        <div>
+            <div class="spinner"></div>
+            <p style="margin-top: 15px; font-size: 16px;">Running demographic model...</p>
+        </div>
+    </div>
+
+    <!-- Control Panel -->
+    <div class="control-panel">
+        <!-- Filters -->
+        <div class="panel-section">
+            <h2>Filters & Timeline</h2>
+            
+            <div class="filter-section">
+                <label style="font-size: 13px; margin-bottom: 6px; display: block;">Region:</label>
+                <select id="regionFilter">
+                    <option value="">All Regions (Global)</option>
+                    <option value="Africa">Africa</option>
+                    <option value="Asia">Asia</option>
+                    <option value="Americas">Americas</option>
+                    <option value="Europe">Europe</option>
+                    <option value="Arctic">Arctic</option>
+                    <option value="Ocean">Marine/Oceans</option>
+                    <option value="Indonesia">Indonesia</option>
+                    <option value="India">India</option>
+                    <option value="China">China</option>
+                </select>
+            </div>
+
+            <div class="timeline-control">
+                <label style="font-size: 13px; margin-bottom: 6px; display: block;">
+                    <span>Projection Timeline:</span>
+                    <span class="scenario-value" id="yearsValue">10 years</span>
+                </label>
+                <input type="range" class="slider" id="yearsSlider" min="5" max="50" value="10" step="5">
+                <div class="timeline-years">
+                    <span>5 yr</span>
+                    <span>25 yr</span>
+                    <span>50 yr</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scenarios -->
+        <div class="panel-section">
+            <h2>Environmental Scenarios</h2>
+            
+            <div class="scenario-control">
+                <label>
+                    <span>🌡️ Temperature</span>
+                    <span class="scenario-value" id="tempValue">+1.0°C</span>
+                </label>
+                <input type="range" class="slider" id="tempSlider" min="0" max="50" value="10">
+            </div>
+
+            <div class="scenario-control">
+                <label>
+                    <span>🌳 Deforestation</span>
+                    <span class="scenario-value" id="deforestValue">+15%</span>
+                </label>
+                <input type="range" class="slider" id="deforestSlider" min="0" max="100" value="15">
+            </div>
+
+            <div class="scenario-control">
+                <label>
+                    <span>💨 Pollution</span>
+                    <span class="scenario-value" id="pollutionValue">+20%</span>
+                </label>
+                <input type="range" class="slider" id="pollutionSlider" min="0" max="100" value="20">
+            </div>
+
+            <div class="scenario-control">
+                <label>
+                    <span>🌊 Sea Level</span>
+                    <span class="scenario-value" id="seaValue">+0.5m</span>
+                </label>
+                <input type="range" class="slider" id="seaSlider" min="0" max="50" value="5">
+            </div>
+
+            <div class="scenario-control">
+                <label>
+                    <span>🎣 Overfishing</span>
+                    <span class="scenario-value" id="fishValue">+10%</span>
+                </label>
+                <input type="range" class="slider" id="fishSlider" min="0" max="100" value="10">
+            </div>
+
+            <div class="scenario-control">
+                <label>
+                    <span>🏭 Habitat Loss</span>
+                    <span class="scenario-value" id="habitatValue">+25%</span>
+                </label>
+                <input type="range" class="slider" id="habitatSlider" min="0" max="100" value="25">
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-predict" onclick="runPrediction()">🔮 Run Prediction</button>
+                <button class="btn btn-reset" onclick="resetAll()">↺ Reset</button>
+            </div>
+        </div>
+
+        <!-- Species List -->
+        <div class="panel-section">
+            <h2>Population Projections</h2>
+            <div id="speciesList" style="max-height: 500px; overflow-y: auto;">
+                <!-- Will be populated -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize map
+        const map = L.map('map', {
+            center: [20, 10],
+            zoom: 2,
+            minZoom: 2,
+            maxZoom: 10
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OSM'
+        }).addTo(map);
+
+        L.control.zoom({ position: 'bottomleft' }).addTo(map);
+
+        let currentData = null;
+        const markers = [];
+
+        // Slider updates
+        document.getElementById('tempSlider').oninput = function() {
+            document.getElementById('tempValue').textContent = '+' + (this.value / 10).toFixed(1) + '°C';
+        };
+        document.getElementById('deforestSlider').oninput = function() {
+            document.getElementById('deforestValue').textContent = '+' + this.value + '%';
+        };
+        document.getElementById('pollutionSlider').oninput = function() {
+            document.getElementById('pollutionValue').textContent = '+' + this.value + '%';
+        };
+        document.getElementById('seaSlider').oninput = function() {
+            document.getElementById('seaValue').textContent = '+' + (this.value / 10).toFixed(1) + 'm';
+        };
+        document.getElementById('fishSlider').oninput = function() {
+            document.getElementById('fishValue').textContent = '+' + this.value + '%';
+        };
+        document.getElementById('habitatSlider').oninput = function() {
+            document.getElementById('habitatValue').textContent = '+' + this.value + '%';
+        };
+        document.getElementById('yearsSlider').oninput = function() {
+            document.getElementById('yearsValue').textContent = this.value + ' years';
+        };
+
+        // Run prediction with REAL POPULATION MODEL
+        async function runPrediction() {
+            const loading = document.getElementById('loading');
+            loading.style.display = 'flex';
+
+            const temp = document.getElementById('tempSlider').value / 10;
+            const deforest = document.getElementById('deforestSlider').value;
+            const pollution = document.getElementById('pollutionSlider').value;
+            const sea = document.getElementById('seaSlider').value / 10;
+            const fish = document.getElementById('fishSlider').value;
+            const habitat = document.getElementById('habitatSlider').value;
+            const years = document.getElementById('yearsSlider').value;
+            const region = document.getElementById('regionFilter').value;
+
+            try {
+                const url = `http://localhost:8000/predict/global?temperature=${temp}&deforestation=${deforest}&pollution=${pollution}&sea_level=${sea}&fishing=${fish}&habitat_loss=${habitat}&years=${years}&region=${region}`;
+                
+                const response = await fetch(url, { method: 'POST' });
+                const data = await response.json();
+                
+                currentData = data;
+
+                // Update header stats
+                const stats = data.global_stats;
+                document.getElementById('totalSpecies').textContent = stats.total_species;
+                const totalPop = stats.total_current_population;
+                document.getElementById('totalPop').textContent = 
+                    totalPop > 1000000 ? (totalPop/1000000).toFixed(1) + 'M' : 
+                    totalPop > 1000 ? (totalPop/1000).toFixed(0) + 'K' : totalPop;
+                document.getElementById('popChange').textContent = stats.avg_population_change_pct + '%';
+
+                // Update species list with POPULATION DATA
+                updateSpeciesList(data.species);
+                updateMarkers(data.species);
+
+                loading.style.display = 'none';
+
+            } catch (error) {
+                console.error('Prediction failed:', error);
+                loading.style.display = 'none';
+                alert('API connection failed. Make sure server is running:\npython run_api.py');
+            }
+        }
+
+        // Update species list with population projections
+        function updateSpeciesList(species) {
+            const list = document.getElementById('speciesList');
+            list.innerHTML = species.slice(0, 30).map(sp => {
+                const popChange = sp.population_change_pct;
+                const popClass = popChange < -10 ? 'pop-decline' : 
+                                popChange > 10 ? 'pop-increase' : 'pop-stable';
+                const statusClass = sp.predicted_risk >= 85 ? 'status-critical' :
+                                   sp.predicted_risk >= 70 ? 'status-endangered' : 'status-vulnerable';
+                
+                return `
+                    <div class="species-card">
+                        <div class="species-header">
+                            <div class="species-name">${sp.name}</div>
+                            <div class="species-status ${statusClass}">${sp.status}</div>
+                        </div>
+                        <div class="species-meta">📍 ${sp.region} • ${sp.scientific}</div>
+                        <div class="population-info">
+                            <div>Current: ${sp.current_population.toLocaleString()}</div>
+                            <div>Projected (${currentData?.global_stats.projection_years}yr): ${sp.projected_population.toLocaleString()}</div>
+                            <div class="${popClass} pop-change">
+                                Change: ${popChange > 0 ? '+' : ''}${popChange}%
+                                ${sp.extinction_probability > 0.5 ? ' ⚠️ High extinction risk' : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Update map markers
+        function updateMarkers(species) {
+            markers.forEach(m => map.removeLayer(m));
+            markers.length = 0;
+
+            species.forEach(sp => {
+                const lat = sp.coordinates[1];
+                const lon = sp.coordinates[0];
+                
+                if (!lat || !lon) return;
+
+                const risk = sp.predicted_risk;
+                const color = risk >= 85 ? '#ff4b2b' : risk >= 70 ? '#ff5858' : '#ff9800';
+
+                const marker = L.circleMarker([lat, lon], {
+                    radius: 6,
+                    fillColor: color,
+                    color: 'white',
+                    weight: 2,
+                    fillOpacity: 0.8
+                }).addTo(map);
+
+                marker.bindPopup(`
+                    <div style="font-family: Arial; color: #333;">
+                        <strong>${sp.name}</strong><br>
+                        <em style="font-size: 11px;">${sp.scientific}</em><br>
+                        <div style="margin-top: 8px; font-size: 12px;">
+                            📍 ${sp.region}<br>
+                            📊 Risk: ${sp.predicted_risk}/100<br>
+                            👥 Pop: ${sp.current_population.toLocaleString()} → ${sp.projected_population.toLocaleString()}<br>
+                            ${sp.extinction_probability > 0.3 ? '⚠️ Extinction risk: ' + (sp.extinction_probability*100).toFixed(0) + '%' : ''}
+                        </div>
+                    </div>
+                `);
+
+                markers.push(marker);
+            });
+        }
+
+        // Reset
+        function resetAll() {
+            document.getElementById('tempSlider').value = 10;
+            document.getElementById('deforestSlider').value = 15;
+            document.getElementById('pollutionSlider').value = 20;
+            document.getElementById('seaSlider').value = 5;
+            document.getElementById('fishSlider').value = 10;
+            document.getElementById('habitatSlider').value = 25;
+            document.getElementById('yearsSlider').value = 10;
+            document.getElementById('regionFilter').value = '';
+            
+            document.getElementById('tempSlider').oninput();
+            document.getElementById('deforestSlider').oninput();
+            document.getElementById('pollutionSlider').oninput();
+            document.getElementById('seaSlider').oninput();
+            document.getElementById('fishSlider').oninput();
+            document.getElementById('habitatSlider').oninput();
+            document.getElementById('yearsSlider').oninput();
+        }
+
+        // Auto-load on start
+        window.onload = function() {
+            console.log('Dashboard loaded - Click "Run Prediction" to see population projections!');
+        };
+    </script>
+</body>
+</html>
+

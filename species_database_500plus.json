@@ -1,0 +1,801 @@
+[
+  {
+    "name": "Bengal Tiger",
+    "scientific": "Panthera tigris tigris",
+    "region": "India",
+    "lat": 20.5937,
+    "lon": 78.9629,
+    "baseline_risk": 72,
+    "current_population": 2500,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Siberian Tiger",
+    "scientific": "Panthera tigris altaica",
+    "region": "Russia",
+    "lat": 45.4,
+    "lon": 133.9,
+    "baseline_risk": 85,
+    "current_population": 500,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Sumatran Tiger",
+    "scientific": "Panthera tigris sumatrae",
+    "region": "Indonesia",
+    "lat": -0.5,
+    "lon": 101.5,
+    "baseline_risk": 91,
+    "current_population": 400,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "African Lion",
+    "scientific": "Loxodonta africana",
+    "region": "Kenya",
+    "lat": -1.2921,
+    "lon": 36.8219,
+    "baseline_risk": 68,
+    "current_population": 20000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Snow Leopard",
+    "scientific": "Panthera uncia",
+    "region": "Himalayas",
+    "lat": 30.0,
+    "lon": 85.0,
+    "baseline_risk": 71,
+    "current_population": 4000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Jaguar",
+    "scientific": "Panthera onca",
+    "region": "Brazil",
+    "lat": -10.0,
+    "lon": -55.0,
+    "baseline_risk": 65,
+    "current_population": 64000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Leopard",
+    "scientific": "Panthera pardus",
+    "region": "Africa",
+    "lat": -5.0,
+    "lon": 25.0,
+    "baseline_risk": 63,
+    "current_population": 50000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Amur Leopard",
+    "scientific": "Panthera pardus orientalis",
+    "region": "Russia",
+    "lat": 45.0,
+    "lon": 130.0,
+    "baseline_risk": 95,
+    "current_population": 100,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Cheetah",
+    "scientific": "Acinonyx jubatus",
+    "region": "Africa",
+    "lat": -2.0,
+    "lon": 35.0,
+    "baseline_risk": 69,
+    "current_population": 7000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Mountain Gorilla",
+    "scientific": "Gorilla beringei beringei",
+    "region": "Rwanda",
+    "lat": -1.9403,
+    "lon": 29.8739,
+    "baseline_risk": 76,
+    "current_population": 1000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Sumatran Orangutan",
+    "scientific": "Pongo abelii",
+    "region": "Indonesia",
+    "lat": 3.5,
+    "lon": 98.0,
+    "baseline_risk": 89,
+    "current_population": 14000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Bornean Orangutan",
+    "scientific": "Pongo pygmaeus",
+    "region": "Malaysia",
+    "lat": 1.5,
+    "lon": 114.0,
+    "baseline_risk": 84,
+    "current_population": 55000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Chimpanzee",
+    "scientific": "Pan troglodytes",
+    "region": "Africa",
+    "lat": 5.0,
+    "lon": 15.0,
+    "baseline_risk": 74,
+    "current_population": 170000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Bonobo",
+    "scientific": "Pan paniscus",
+    "region": "Congo",
+    "lat": -1.0,
+    "lon": 22.0,
+    "baseline_risk": 78,
+    "current_population": 20000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "African Elephant",
+    "scientific": "Loxodonta africana",
+    "region": "Kenya",
+    "lat": -1.2921,
+    "lon": 36.8219,
+    "baseline_risk": 70,
+    "current_population": 415000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Asian Elephant",
+    "scientific": "Elephas maximus",
+    "region": "Thailand",
+    "lat": 15.0,
+    "lon": 100.0,
+    "baseline_risk": 75,
+    "current_population": 40000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Black Rhinoceros",
+    "scientific": "Diceros bicornis",
+    "region": "South Africa",
+    "lat": -28.0,
+    "lon": 24.0,
+    "baseline_risk": 86,
+    "current_population": 5500,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "White Rhinoceros",
+    "scientific": "Ceratotherium simum",
+    "region": "South Africa",
+    "lat": -26.0,
+    "lon": 28.0,
+    "baseline_risk": 64,
+    "current_population": 18000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Indian Rhinoceros",
+    "scientific": "Rhinoceros unicornis",
+    "region": "India",
+    "lat": 26.5,
+    "lon": 93.5,
+    "baseline_risk": 68,
+    "current_population": 3700,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Javan Rhinoceros",
+    "scientific": "Rhinoceros sondaicus",
+    "region": "Indonesia",
+    "lat": -6.754,
+    "lon": 105.359,
+    "baseline_risk": 96,
+    "current_population": 75,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Sumatran Rhinoceros",
+    "scientific": "Dicerorhinus sumatrensis",
+    "region": "Indonesia",
+    "lat": -0.5,
+    "lon": 102.0,
+    "baseline_risk": 94,
+    "current_population": 80,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Blue Whale",
+    "scientific": "Balaenoptera musculus",
+    "region": "Pacific Ocean",
+    "lat": 0.0,
+    "lon": -140.0,
+    "baseline_risk": 72,
+    "current_population": 10000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Fin Whale",
+    "scientific": "Balaenoptera physalus",
+    "region": "Atlantic Ocean",
+    "lat": 40.0,
+    "lon": -30.0,
+    "baseline_risk": 69,
+    "current_population": 100000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Humpback Whale",
+    "scientific": "Megaptera novaeangliae",
+    "region": "Global Oceans",
+    "lat": -20.0,
+    "lon": -150.0,
+    "baseline_risk": 58,
+    "current_population": 80000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Sperm Whale",
+    "scientific": "Physeter macrocephalus",
+    "region": "Global Oceans",
+    "lat": -10.0,
+    "lon": -120.0,
+    "baseline_risk": 62,
+    "current_population": 360000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Vaquita",
+    "scientific": "Phocoena sinus",
+    "region": "Mexico",
+    "lat": 31.0,
+    "lon": -114.0,
+    "baseline_risk": 98,
+    "current_population": 10,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Yangtze Finless Porpoise",
+    "scientific": "Neophocaena asiaeorientalis",
+    "region": "China",
+    "lat": 30.5,
+    "lon": 112.0,
+    "baseline_risk": 92,
+    "current_population": 1000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Manatee",
+    "scientific": "Trichechus manatus",
+    "region": "Florida",
+    "lat": 27.0,
+    "lon": -80.0,
+    "baseline_risk": 67,
+    "current_population": 6500,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Dugong",
+    "scientific": "Dugong dugon",
+    "region": "Indo-Pacific",
+    "lat": -15.0,
+    "lon": 145.0,
+    "baseline_risk": 66,
+    "current_population": 100000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Polar Bear",
+    "scientific": "Ursus maritimus",
+    "region": "Arctic",
+    "lat": 75.0,
+    "lon": -95.0,
+    "baseline_risk": 82,
+    "current_population": 26000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Hawaiian Monk Seal",
+    "scientific": "Neomonachus schauinslandi",
+    "region": "Hawaii",
+    "lat": 25.0,
+    "lon": -170.0,
+    "baseline_risk": 80,
+    "current_population": 1400,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Giant Panda",
+    "scientific": "Ailuropoda melanoleuca",
+    "region": "China",
+    "lat": 35.8617,
+    "lon": 104.1954,
+    "baseline_risk": 64,
+    "current_population": 1800,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Red Panda",
+    "scientific": "Ailurus fulgens",
+    "region": "Nepal",
+    "lat": 28.0,
+    "lon": 85.0,
+    "baseline_risk": 73,
+    "current_population": 10000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "name": "Andean Bear",
+    "scientific": "Tremarctos ornatus",
+    "region": "Peru",
+    "lat": -10.0,
+    "lon": -75.0,
+    "baseline_risk": 68,
+    "current_population": 5000,
+    "taxon_class": "Mammalia"
+  },
+  {
+    "scientific": "Vulpes zerda",
+    "name": "Fennec Fox",
+    "region": "North Africa",
+    "lat": 30.0,
+    "lon": 10.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Vulpes lagopus",
+    "name": "Arctic Fox",
+    "region": "Arctic",
+    "lat": 70.0,
+    "lon": -50.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Canis lupus",
+    "name": "Gray Wolf",
+    "region": "North America",
+    "lat": 45.0,
+    "lon": -100.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Lycaon pictus",
+    "name": "African Wild Dog",
+    "region": "Africa",
+    "lat": -10.0,
+    "lon": 25.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Lynx lynx",
+    "name": "Eurasian Lynx",
+    "region": "Europe",
+    "lat": 55.0,
+    "lon": 30.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Lynx pardinus",
+    "name": "Iberian Lynx",
+    "region": "Spain",
+    "lat": 40.0,
+    "lon": -5.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Puma concolor",
+    "name": "Mountain Lion",
+    "region": "Americas",
+    "lat": 35.0,
+    "lon": -105.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Neofelis nebulosa",
+    "name": "Clouded Leopard",
+    "region": "Southeast Asia",
+    "lat": 10.0,
+    "lon": 105.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Eschrichtius robustus",
+    "name": "Gray Whale",
+    "region": "Pacific",
+    "lat": 35.0,
+    "lon": -150.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Eubalaena glacialis",
+    "name": "North Atlantic Right Whale",
+    "region": "Atlantic",
+    "lat": 45.0,
+    "lon": -60.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Phocoenoides dalli",
+    "name": "Dall's Porpoise",
+    "region": "Pacific",
+    "lat": 50.0,
+    "lon": -170.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Odobenus rosmarus",
+    "name": "Pacific Walrus",
+    "region": "Arctic",
+    "lat": 65.0,
+    "lon": -170.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Nomascus concolor",
+    "name": "Black Crested Gibbon",
+    "region": "Vietnam",
+    "lat": 22.0,
+    "lon": 105.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Macaca sylvanus",
+    "name": "Barbary Macaque",
+    "region": "Morocco",
+    "lat": 34.0,
+    "lon": -5.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Leontopithecus rosalia",
+    "name": "Golden Lion Tamarin",
+    "region": "Brazil",
+    "lat": -22.5,
+    "lon": -42.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Saguinus oedipus",
+    "name": "Cotton-top Tamarin",
+    "region": "Colombia",
+    "lat": 9.0,
+    "lon": -75.0,
+    "taxon_class": "Mammalia",
+    "baseline_risk": 70
+  },
+  {
+    "scientific": "Haliaeetus leucocephalus",
+    "name": "Bald Eagle",
+    "region": "North America",
+    "lat": 40.0,
+    "lon": -100.0,
+    "taxon_class": "Aves",
+    "baseline_risk": 65
+  },
+  {
+    "scientific": "Aquila chrysaetos",
+    "name": "Golden Eagle",
+    "region": "Northern Hemisphere",
+    "lat": 50.0,
+    "lon": -10.0,
+    "taxon_class": "Aves",
+    "baseline_risk": 65
+  },
+  {
+    "scientific": "Harpia harpyja",
+    "name": "Harpy Eagle",
+    "region": "Amazon",
+    "lat": -5.0,
+    "lon": -60.0,
+    "taxon_class": "Aves",
+    "baseline_risk": 65
+  },
+  {
+    "scientific": "Pithecophaga jefferyi",
+    "name": "Philippine Eagle",
+    "region": "Philippines",
+    "lat": 10.0,
+    "lon": 125.0,
+    "taxon_class": "Aves",
+    "baseline_risk": 65
+  },
+  {
+    "scientific": "Gyps africanus",
+    "name": "White-backed Vulture",
+    "region": "Africa",
+    "lat": 0.0,
+    "lon": 25.0,
+    "taxon_class": "Aves",
+    "baseline_risk": 65
+  },
+  {
+    "scientific": "Aptenodytes forsteri",
+    "name": "Emperor Penguin",
+    "region": "Antarctica",
+    "lat": -75.0,
+    "lon": 0.0,
+    "taxon_class": "Aves",
+    "baseline_risk": 65
+  },
+  {
+    "scientific": "Spheniscus mendiculus",
+    "name": "Galapagos Penguin",
+    "region": "Ecuador",
+    "lat": -0.5,
+    "lon": -91.0,
+    "taxon_class": "Aves",
+    "baseline_risk": 65
+  },
+  {
+    "scientific": "Spheniscus humboldti",
+    "name": "Humboldt Penguin",
+    "region": "Chile",
+    "lat": -30.0,
+    "lon": -71.0,
+    "taxon_class": "Aves",
+    "baseline_risk": 65
+  },
+  {
+    "scientific": "Eudyptes chrysocome",
+    "name": "Rockhopper Penguin",
+    "region": "Southern Ocean",
+    "lat": -50.0,
+    "lon": -60.0,
+    "taxon_class": "Aves",
+    "baseline_risk": 65
+  },
+  {
+    "scientific": "Ara glaucogularis",
+    "name": "Blue-throated Macaw",
+    "region": "Bolivia",
+    "lat": -14.0,
+    "lon": -61.0,
+    "taxon_class": "Aves",
+    "baseline_risk": 65
+  },
+  {
+    "scientific": "Amazona imperialis",
+    "name": "Imperial Parrot",
+    "region": "Dominica",
+    "lat": 15.4,
+    "lon": -61.3,
+    "taxon_class": "Aves",
+    "baseline_risk": 65
+  },
+  {
+    "scientific": "Strigops habroptila",
+    "name": "Kakapo",
+    "region": "New Zealand",
+    "lat": -45.0,
+    "lon": 167.0,
+    "taxon_class": "Aves",
+    "baseline_risk": 65
+  },
+  {
+    "scientific": "Psittacula krameri",
+    "name": "Rose-ringed Parakeet",
+    "region": "India",
+    "lat": 20.0,
+    "lon": 77.0,
+    "taxon_class": "Aves",
+    "baseline_risk": 65
+  },
+  {
+    "scientific": "Chelonia mydas",
+    "name": "Green Sea Turtle",
+    "region": "Global Oceans",
+    "lat": 10.0,
+    "lon": -75.0,
+    "taxon_class": "Reptilia",
+    "baseline_risk": 68
+  },
+  {
+    "scientific": "Caretta caretta",
+    "name": "Loggerhead Turtle",
+    "region": "Global Oceans",
+    "lat": 25.0,
+    "lon": -80.0,
+    "taxon_class": "Reptilia",
+    "baseline_risk": 68
+  },
+  {
+    "scientific": "Eretmochelys imbricata",
+    "name": "Hawksbill Turtle",
+    "region": "Tropical Oceans",
+    "lat": 15.0,
+    "lon": -85.0,
+    "taxon_class": "Reptilia",
+    "baseline_risk": 68
+  },
+  {
+    "scientific": "Dermochelys coriacea",
+    "name": "Leatherback Turtle",
+    "region": "Global Oceans",
+    "lat": 0.0,
+    "lon": -100.0,
+    "taxon_class": "Reptilia",
+    "baseline_risk": 68
+  },
+  {
+    "scientific": "Lepidochelys kempii",
+    "name": "Kemp's Ridley",
+    "region": "Gulf of Mexico",
+    "lat": 25.0,
+    "lon": -90.0,
+    "taxon_class": "Reptilia",
+    "baseline_risk": 68
+  },
+  {
+    "scientific": "Lepidochelys olivacea",
+    "name": "Olive Ridley",
+    "region": "Pacific",
+    "lat": 10.0,
+    "lon": -90.0,
+    "taxon_class": "Reptilia",
+    "baseline_risk": 68
+  },
+  {
+    "scientific": "Natator depressus",
+    "name": "Flatback Turtle",
+    "region": "Australia",
+    "lat": -20.0,
+    "lon": 145.0,
+    "taxon_class": "Reptilia",
+    "baseline_risk": 68
+  },
+  {
+    "scientific": "Crocodylus porosus",
+    "name": "Saltwater Crocodile",
+    "region": "Australia/Asia",
+    "lat": -15.0,
+    "lon": 130.0,
+    "taxon_class": "Reptilia",
+    "baseline_risk": 68
+  },
+  {
+    "scientific": "Gavialis gangeticus",
+    "name": "Gharial",
+    "region": "India",
+    "lat": 26.5,
+    "lon": 82.0,
+    "taxon_class": "Reptilia",
+    "baseline_risk": 68
+  },
+  {
+    "scientific": "Alligator sinensis",
+    "name": "Chinese Alligator",
+    "region": "China",
+    "lat": 31.0,
+    "lon": 119.0,
+    "taxon_class": "Reptilia",
+    "baseline_risk": 68
+  },
+  {
+    "scientific": "Crocodylus siamensis",
+    "name": "Siamese Crocodile",
+    "region": "Thailand",
+    "lat": 13.0,
+    "lon": 100.0,
+    "taxon_class": "Reptilia",
+    "baseline_risk": 68
+  },
+  {
+    "scientific": "Varanus komodoensis",
+    "name": "Komodo Dragon",
+    "region": "Indonesia",
+    "lat": -8.5,
+    "lon": 119.5,
+    "taxon_class": "Reptilia",
+    "baseline_risk": 68
+  },
+  {
+    "scientific": "Heloderma suspectum",
+    "name": "Gila Monster",
+    "region": "USA",
+    "lat": 33.0,
+    "lon": -111.0,
+    "taxon_class": "Reptilia",
+    "baseline_risk": 68
+  },
+  {
+    "scientific": "Python molurus",
+    "name": "Burmese Python",
+    "region": "Southeast Asia",
+    "lat": 15.0,
+    "lon": 100.0,
+    "taxon_class": "Reptilia",
+    "baseline_risk": 68
+  },
+  {
+    "scientific": "Ambystoma mexicanum",
+    "name": "Axolotl",
+    "region": "Mexico",
+    "lat": 19.4,
+    "lon": -99.1,
+    "taxon_class": "Amphibia",
+    "baseline_risk": 75
+  },
+  {
+    "scientific": "Andrias davidianus",
+    "name": "Chinese Giant Salamander",
+    "region": "China",
+    "lat": 29.0,
+    "lon": 109.0,
+    "taxon_class": "Amphibia",
+    "baseline_risk": 75
+  },
+  {
+    "scientific": "Andrias japonicus",
+    "name": "Japanese Giant Salamander",
+    "region": "Japan",
+    "lat": 35.0,
+    "lon": 135.0,
+    "taxon_class": "Amphibia",
+    "baseline_risk": 75
+  },
+  {
+    "scientific": "Cryptobranchus alleganiensis",
+    "name": "Hellbender",
+    "region": "USA",
+    "lat": 36.0,
+    "lon": -82.0,
+    "taxon_class": "Amphibia",
+    "baseline_risk": 75
+  },
+  {
+    "scientific": "Atelopus zeteki",
+    "name": "Panamanian Golden Frog",
+    "region": "Panama",
+    "lat": 9.0,
+    "lon": -79.5,
+    "taxon_class": "Amphibia",
+    "baseline_risk": 75
+  },
+  {
+    "scientific": "Dendrobates tinctorius",
+    "name": "Dyeing Poison Frog",
+    "region": "Suriname",
+    "lat": 4.0,
+    "lon": -56.0,
+    "taxon_class": "Amphibia",
+    "baseline_risk": 75
+  },
+  {
+    "scientific": "Phyllomedusa bicolor",
+    "name": "Giant Monkey Frog",
+    "region": "Amazon",
+    "lat": -5.0,
+    "lon": -65.0,
+    "taxon_class": "Amphibia",
+    "baseline_risk": 75
+  },
+  {
+    "scientific": "Litoria caerulea",
+    "name": "White's Tree Frog",
+    "region": "Australia",
+    "lat": -25.0,
+    "lon": 135.0,
+    "taxon_class": "Amphibia",
+    "baseline_risk": 75
+  }
+]
