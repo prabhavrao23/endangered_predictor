@@ -1,0 +1,43 @@
+# Data Processing
+pandas
+numpy
+scipy
+scikit-learn
+earthengine-api
+geopandas
+opencv-python
+
+# Deep Learning
+tensorflow
+keras
+torch
+torchvision
+
+# API and Backend
+fastapi
+uvicorn
+celery
+redis
+sqlalchemy
+psycopg2-binary
+
+# Visualization
+plotly
+dash
+leaflet
+matplotlib
+seaborn
+
+# Data Collection
+requests
+beautifulsoup4
+tweepy
+praw
+sentinelsat
+
+# Utils
+python-dotenv
+pytest
+black
+flake8
+mypy
